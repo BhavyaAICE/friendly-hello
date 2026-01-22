@@ -19,10 +19,53 @@ interface Testimonial {
 
 const AUTO_SLIDE_INTERVAL = 5000;
 
+// Sample testimonials for display when database is empty
+const sampleTestimonials: Testimonial[] = [
+  {
+    id: "1",
+    name: "Arjun Sharma",
+    role: "Full Stack Developer",
+    organization: "Microsoft",
+    testimonial: "Hacker's Unity transformed my career. The hackathons pushed me beyond my limits and helped me connect with amazing mentors who guided me to land my dream job. The community here is incredibly supportive!",
+    is_active: true,
+  },
+  {
+    id: "2",
+    name: "Priya Patel",
+    role: "ML Engineer",
+    organization: "Google",
+    testimonial: "Being part of this community opened doors I never knew existed. The workshops on AI/ML were top-notch, and I met my co-founders at one of their hackathons. Truly a game-changer for aspiring developers!",
+    is_active: true,
+  },
+  {
+    id: "3",
+    name: "Rahul Verma",
+    role: "Blockchain Developer",
+    organization: "Polygon",
+    testimonial: "The Web3 hackathons organized by Hacker's Unity were exceptional. I learned more in those 48 hours than I did in months of self-study. The prizes and recognition helped kickstart my journey in blockchain.",
+    is_active: true,
+  },
+  {
+    id: "4",
+    name: "Sneha Gupta",
+    role: "DevOps Engineer",
+    organization: "Amazon",
+    testimonial: "What sets Hacker's Unity apart is their focus on real-world skills. The events aren't just about coding—they teach you teamwork, presentation, and how to think like an entrepreneur. Highly recommended!",
+    is_active: true,
+  },
+  {
+    id: "5",
+    name: "Vikram Reddy",
+    role: "Startup Founder",
+    organization: "TechVentures",
+    testimonial: "I pitched my startup idea at a Hacker's Unity event and received invaluable feedback. Today, my company has grown to 50 employees. This community truly nurtures innovation and entrepreneurship.",
+    is_active: true,
+  },
+];
+
 const TestimonialsSection = () => {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(sampleTestimonials);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -37,11 +80,11 @@ const TestimonialsSection = () => {
         .select("*")
         .eq("is_active", true)
         .order("display_order");
-      if (!error && data) {
+      if (!error && data && data.length > 0) {
         setTestimonials(data);
       }
-    } finally {
-      setLoading(false);
+    } catch {
+      // Use sample testimonials on error
     }
   };
 
@@ -84,18 +127,6 @@ const TestimonialsSection = () => {
       scale: 0.95,
     }),
   };
-
-  if (loading) {
-    return (
-      <section className="py-24 bg-gradient-to-b from-background to-muted/30" id="testimonials">
-        <div className="container-custom">
-          <div className="text-center">
-            <div className="text-muted-foreground">Loading testimonials...</div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   if (testimonials.length === 0) {
     return null;
@@ -245,20 +276,6 @@ const TestimonialsSection = () => {
                 aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
-          </div>
-
-          {/* Progress Bar */}
-          <div className="mt-4 h-1 bg-muted rounded-full overflow-hidden max-w-xs mx-auto">
-            <motion.div
-              key={currentIndex}
-              className="h-full bg-primary/60"
-              initial={{ width: "0%" }}
-              animate={{ width: isPaused ? "0%" : "100%" }}
-              transition={{ 
-                duration: AUTO_SLIDE_INTERVAL / 1000, 
-                ease: "linear" 
-              }}
-            />
           </div>
         </div>
       </div>
