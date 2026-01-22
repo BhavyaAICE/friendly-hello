@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Linkedin, Instagram, Youtube, Github, Mail, Phone, MapPin } from "lucide-react";
+import { Linkedin, Instagram, Youtube, Github, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/hackers-unity-logo.png";
 
@@ -110,112 +110,121 @@ const Footer = () => {
 
   return (
     <footer className="bg-card border-t border-border">
-      <div className="container-custom py-16">
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
-          {/* Brand */}
-          <div className="col-span-2">
-            <a href="/" onClick={handleLogoClick} className="flex items-center gap-2 mb-4">
-              <img src={logo} alt="Hacker's Unity" width={56} height={56} className="h-14 w-auto" />
+      <div className="container-custom py-12 md:py-16">
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-10">
+          {/* Brand & Contact Column */}
+          <div className="lg:col-span-4 space-y-6">
+            <a href="/" onClick={handleLogoClick} className="inline-flex items-center gap-2">
+              <img src={logo} alt="Hacker's Unity" width={56} height={56} className="h-12 w-auto" />
             </a>
-            <p className="text-sm text-muted-foreground mb-6">
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               India's leading tech community empowering developers, innovators, and technology enthusiasts.
             </p>
             
             {/* Contact Details */}
-            <div className="space-y-3 mb-6">
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-3">
               <a 
                 href="mailto:contact@hackersunity.com" 
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
-                <Mail className="w-4 h-4" />
+                <Mail className="w-4 h-4 flex-shrink-0" />
                 contact@hackersunity.com
               </a>
               <a 
                 href="tel:+919876543210" 
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
-                <Phone className="w-4 h-4" />
+                <Phone className="w-4 h-4 flex-shrink-0" />
                 +91 98765 43210
               </a>
-              <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <span>Mumbai, Maharashtra, India</span>
-              </div>
+            </div>
+          </div>
+
+          {/* Links Grid */}
+          <div className="lg:col-span-5 grid grid-cols-2 sm:grid-cols-4 gap-8">
+            <div>
+              <h4 className="font-display font-semibold text-foreground mb-4 text-sm">Company</h4>
+              <ul className="space-y-3">
+                {footerLinks.company.map((link) => (
+                  <li key={link.name}>{renderLink(link)}</li>
+                ))}
+              </ul>
             </div>
 
-            {/* Discord Button */}
-            <Button
-              asChild
-              className="bg-[hsl(235,86%,65%)] hover:bg-[hsl(235,86%,55%)] text-white gap-2"
-            >
-              <a 
-                href="https://discord.gg/hackersunity" 
-                target="_blank" 
-                rel="noopener noreferrer"
+            <div>
+              <h4 className="font-display font-semibold text-foreground mb-4 text-sm">Programs</h4>
+              <ul className="space-y-3">
+                {footerLinks.programs.map((link) => (
+                  <li key={link.name}>{renderLink(link)}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-display font-semibold text-foreground mb-4 text-sm">Resources</h4>
+              <ul className="space-y-3">
+                {footerLinks.resources.map((link) => (
+                  <li key={link.name}>{renderLink(link)}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-display font-semibold text-foreground mb-4 text-sm">Legal</h4>
+              <ul className="space-y-3">
+                {footerLinks.legal.map((link) => (
+                  <li key={link.name}>{renderLink(link)}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Discord & Social Column */}
+          <div className="lg:col-span-3 space-y-6">
+            <div>
+              <h4 className="font-display font-semibold text-foreground mb-4 text-sm">Join Our Community</h4>
+              <Button
+                asChild
+                className="bg-[hsl(235,86%,65%)] hover:bg-[hsl(235,86%,55%)] text-white gap-2 w-full sm:w-auto"
               >
-                <DiscordIcon className="w-5 h-5" />
-                Join Discord
-              </a>
-            </Button>
+                <a 
+                  href="https://discord.gg/hackersunity" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <DiscordIcon className="w-5 h-5" />
+                  Join Discord
+                </a>
+              </Button>
+            </div>
             
             {/* Social Links */}
-            <div className="flex gap-3 mt-6">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300"
-                >
-                  <social.icon className="w-5 h-5" />
-                </a>
-              ))}
+            <div>
+              <h4 className="font-display font-semibold text-foreground mb-4 text-sm">Follow Us</h4>
+              <div className="flex gap-2">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300"
+                  >
+                    <social.icon className="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
-
-          {/* Links */}
-          <div>
-            <h4 className="font-display font-semibold text-foreground mb-4">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>{renderLink(link)}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-display font-semibold text-foreground mb-4">Programs</h4>
-            <ul className="space-y-3">
-              {footerLinks.programs.map((link) => (
-                <li key={link.name}>{renderLink(link)}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-display font-semibold text-foreground mb-4">Resources</h4>
-            <ul className="space-y-3">
-              {footerLinks.resources.map((link) => (
-                <li key={link.name}>{renderLink(link)}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-display font-semibold text-foreground mb-4">Legal</h4>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.name}>{renderLink(link)}</li>
-              ))}
-            </ul>
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">© 2025 Hacker's Unity. All rights reserved.</p>
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-border">
+          <p className="text-sm text-muted-foreground text-center lg:text-left">
+            © 2025 Hacker's Unity. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
