@@ -190,9 +190,21 @@ const FAQs = () => {
                 Reach out to us and we'll get back to you as soon as possible.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <Link to="/#contact">
+                <a
+                  href="/#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = "/#contact";
+                    setTimeout(() => {
+                      const contactSection = document.getElementById("contact");
+                      if (contactSection) {
+                        contactSection.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }, 100);
+                  }}
+                >
                   <Button variant="hero" size="lg">Contact Us</Button>
-                </Link>
+                </a>
                 <a href="https://discord.gg/BmMJFpPe9T" target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" size="lg">Join Discord</Button>
                 </a>
