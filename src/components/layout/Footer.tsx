@@ -1,11 +1,10 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Linkedin, Instagram, Youtube, Github } from "lucide-react";
 import logo from "@/assets/hackers-unity-logo.png";
 
 const footerLinks = {
   company: [
     { name: "About Us", href: "/about-us", isRoute: true },
-    { name: "Careers", href: "/careers", isRoute: true },
     { name: "Workshops", href: "/workshops", isRoute: true },
   ],
   programs: [
@@ -71,16 +70,23 @@ const Footer = () => {
     }
   };
 
+  const handleRouteClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    navigate(href);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const renderLink = (link: FooterLink) => {
     if (link.isRoute) {
       return (
-        <Link
+        <a
           key={link.name}
-          to={link.href}
-          className="text-sm text-muted-foreground hover:text-primary transition-colors"
+          href={link.href}
+          onClick={(e) => handleRouteClick(e, link.href)}
+          className="text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer"
         >
           {link.name}
-        </Link>
+        </a>
       );
     }
     return (
