@@ -125,18 +125,18 @@ const Footer = () => {
             {/* Contact Details */}
             <div className="flex flex-col sm:flex-row lg:flex-col gap-3">
               <a 
-                href="mailto:contact@hackersunity.com" 
+                href="mailto:hackerunity.community@gmail.com" 
                 className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 <Mail className="w-4 h-4 flex-shrink-0" />
-                contact@hackersunity.com
+                hackerunity.community@gmail.com
               </a>
               <a 
-                href="tel:+919876543210" 
+                href="tel:+918852924002" 
                 className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 <Phone className="w-4 h-4 flex-shrink-0" />
-                +91 98765 43210
+                +91 8852924002
               </a>
             </div>
           </div>
