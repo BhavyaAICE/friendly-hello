@@ -166,11 +166,12 @@ const TestimonialsSection = () => {
                 className="absolute inset-0"
               >
                 {/* 🔒 FIXED HEIGHT CARD */}
-                <Card className="h-full p-8 md:p-10 bg-card/80 backdrop-blur-sm border-border/50 shadow-xl flex flex-col">
+                <Card className="h-full p-8 md:p-10 bg-card/80 backdrop-blur-sm border-border/50 shadow-xl flex flex-col justify-between">
                   <Quote className="w-10 h-10 text-primary/40 mb-6" />
 
                   {/* Clamped text */}
-                  <p className="italic text-base md:text-lg text-foreground leading-relaxed line-clamp-5 flex-1">
+                  <p className="italic text-base md:text-lg text-foreground leading-relaxed line-clamp-5">
+
                     "{current.testimonial}"
                   </p>
 
