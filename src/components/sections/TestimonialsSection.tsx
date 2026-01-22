@@ -19,14 +19,15 @@ interface Testimonial {
 
 const AUTO_SLIDE_INTERVAL = 5000;
 
-// Sample testimonials for display when database is empty
+// Sample testimonials fallback
 const sampleTestimonials: Testimonial[] = [
   {
     id: "1",
     name: "Arjun Sharma",
     role: "Full Stack Developer",
     organization: "Microsoft",
-    testimonial: "Hacker's Unity transformed my career. The hackathons pushed me beyond my limits and helped me connect with amazing mentors who guided me to land my dream job. The community here is incredibly supportive!",
+    testimonial:
+      "Hacker's Unity transformed my career. The hackathons pushed me beyond my limits and helped me connect with amazing mentors who guided me to land my dream job.",
     is_active: true,
   },
   {
@@ -34,7 +35,8 @@ const sampleTestimonials: Testimonial[] = [
     name: "Priya Patel",
     role: "ML Engineer",
     organization: "Google",
-    testimonial: "Being part of this community opened doors I never knew existed. The workshops on AI/ML were top-notch, and I met my co-founders at one of their hackathons. Truly a game-changer for aspiring developers!",
+    testimonial:
+      "Being part of this community opened doors I never knew existed. The workshops on AI/ML were top-notch, and I met my co-founders at one of their hackathons.",
     is_active: true,
   },
   {
@@ -42,23 +44,8 @@ const sampleTestimonials: Testimonial[] = [
     name: "Rahul Verma",
     role: "Blockchain Developer",
     organization: "Polygon",
-    testimonial: "The Web3 hackathons organized by Hacker's Unity were exceptional. I learned more in those 48 hours than I did in months of self-study. The prizes and recognition helped kickstart my journey in blockchain.",
-    is_active: true,
-  },
-  {
-    id: "4",
-    name: "Sneha Gupta",
-    role: "DevOps Engineer",
-    organization: "Amazon",
-    testimonial: "What sets Hacker's Unity apart is their focus on real-world skills. The events aren't just about coding—they teach you teamwork, presentation, and how to think like an entrepreneur. Highly recommended!",
-    is_active: true,
-  },
-  {
-    id: "5",
-    name: "Vikram Reddy",
-    role: "Startup Founder",
-    organization: "TechVentures",
-    testimonial: "I pitched my startup idea at a Hacker's Unity event and received invaluable feedback. Today, my company has grown to 50 employees. This community truly nurtures innovation and entrepreneurship.",
+    testimonial:
+      "The Web3 hackathons organized by Hacker's Unity were exceptional. I learned more in those 48 hours than I did in months of self-study.",
     is_active: true,
   },
 ];
@@ -80,117 +67,93 @@ const TestimonialsSection = () => {
         .select("*")
         .eq("is_active", true)
         .order("display_order");
+
       if (!error && data && data.length > 0) {
         setTestimonials(data);
       }
     } catch {
-      // Use sample testimonials on error
+      // fallback already set
     }
   };
 
   const goToNext = useCallback(() => {
-    if (testimonials.length === 0) return;
     setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   }, [testimonials.length]);
 
   const goToPrev = useCallback(() => {
-    if (testimonials.length === 0) return;
     setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   }, [testimonials.length]);
 
-  // Auto-slide effect
   useEffect(() => {
     if (testimonials.length <= 1 || isPaused) return;
-    
     const interval = setInterval(goToNext, AUTO_SLIDE_INTERVAL);
     return () => clearInterval(interval);
-  }, [testimonials.length, isPaused, goToNext]);
+  }, [goToNext, testimonials.length, isPaused]);
 
   const slideVariants = {
     enter: (direction: number) => ({
       x: direction > 0 ? 300 : -300,
       opacity: 0,
-      scale: 0.95,
+      scale: 0.96,
     }),
     center: {
-      zIndex: 1,
       x: 0,
       opacity: 1,
       scale: 1,
     },
     exit: (direction: number) => ({
-      zIndex: 0,
       x: direction < 0 ? 300 : -300,
       opacity: 0,
-      scale: 0.95,
+      scale: 0.96,
     }),
   };
 
-  if (testimonials.length === 0) {
-    return null;
-  }
-
-  const currentTestimonial = testimonials[currentIndex];
+  const current = testimonials[currentIndex];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-background to-muted/30 overflow-hidden" id="testimonials">
+    <section
+      id="testimonials"
+      className="py-24 bg-gradient-to-b from-background to-muted/30 overflow-hidden"
+    >
       <div className="container-custom">
-        {/* Section Header */}
+        {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-primary text-sm font-semibold uppercase tracking-wider"
-          >
+          <span className="text-primary text-sm font-semibold uppercase tracking-wider">
             Testimonials
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold font-display mt-4 mb-6"
-          >
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6">
             What Our <span className="text-primary">Partners</span> Say
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-muted-foreground text-lg"
-          >
+          </h2>
+          <p className="text-muted-foreground text-lg">
             Hear from developers who've transformed their careers through Hacker's Unity
-          </motion.p>
+          </p>
         </div>
 
-        {/* Testimonials Carousel */}
-        <div 
-          className="max-w-4xl mx-auto relative"
+        {/* Carousel */}
+        <div
+          className="relative max-w-4xl mx-auto"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Navigation Arrows */}
+          {/* Arrows */}
           <button
             onClick={goToPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-16 z-10 w-12 h-12 rounded-full bg-card border border-border shadow-lg flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
-            aria-label="Previous testimonial"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 z-10 w-12 h-12 rounded-full bg-card border shadow flex items-center justify-center hover:text-primary"
           >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          
-          <button
-            onClick={goToNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-16 z-10 w-12 h-12 rounded-full bg-card border border-border shadow-lg flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
-            aria-label="Next testimonial"
-          >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronLeft />
           </button>
 
-          <div className="relative min-h-[320px] md:min-h-[280px]">
+          <button
+            onClick={goToNext}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 z-10 w-12 h-12 rounded-full bg-card border shadow flex items-center justify-center hover:text-primary"
+          >
+            <ChevronRight />
+          </button>
+
+          {/* Fixed-height container */}
+          <div className="relative h-[360px] md:h-[340px]">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
                 key={currentIndex}
@@ -199,81 +162,60 @@ const TestimonialsSection = () => {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{
-                  x: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.3 },
-                  scale: { duration: 0.3 },
-                }}
+                transition={{ x: { type: "spring", stiffness: 260, damping: 28 } }}
                 className="absolute inset-0"
               >
-                <Card className="h-full bg-card/80 backdrop-blur-sm border-border/50 p-8 md:p-10 shadow-xl">
-                  <div className="flex flex-col h-full">
-                    {/* Quote Icon */}
-                    <div className="mb-6">
-                      <Quote className="w-10 h-10 text-primary/40" />
-                    </div>
-                    
-                    {/* Testimonial Text */}
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.1 }}
-                      className="text-foreground text-base md:text-lg leading-relaxed flex-1 italic"
-                    >
-                      "{currentTestimonial.testimonial}"
-                    </motion.p>
+                {/* 🔒 FIXED HEIGHT CARD */}
+                <Card className="h-full p-8 md:p-10 bg-card/80 backdrop-blur-sm border-border/50 shadow-xl flex flex-col">
+                  <Quote className="w-10 h-10 text-primary/40 mb-6" />
 
-                    {/* Author Info */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="flex items-center gap-4 pt-6 mt-6 border-t border-border/40"
-                    >
-                      {currentTestimonial.avatar_url ? (
-                        <img
-                          src={currentTestimonial.avatar_url}
-                          alt={currentTestimonial.name}
-                          className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/30 flex-shrink-0"
-                        />
-                      ) : (
-                        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <span className="text-xl font-bold text-primary">
-                            {currentTestimonial.name.charAt(0)}
-                          </span>
-                        </div>
-                      )}
-                      <div>
-                        <h4 className="font-display font-semibold text-foreground text-base md:text-lg">
-                          {currentTestimonial.name}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {currentTestimonial.role}
-                          {currentTestimonial.organization && ` at ${currentTestimonial.organization}`}
-                        </p>
+                  {/* Clamped text */}
+                  <p className="italic text-base md:text-lg text-foreground leading-relaxed line-clamp-5 flex-1">
+                    "{current.testimonial}"
+                  </p>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-4 pt-6 mt-6 border-t border-border/40">
+                    {current.avatar_url ? (
+                      <img
+                        src={current.avatar_url}
+                        alt={current.name}
+                        className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/30"
+                      />
+                    ) : (
+                      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-xl font-bold text-primary">
+                          {current.name.charAt(0)}
+                        </span>
                       </div>
-                    </motion.div>
+                    )}
+                    <div>
+                      <h4 className="font-semibold text-lg">{current.name}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {current.role}
+                        {current.organization && ` at ${current.organization}`}
+                      </p>
+                    </div>
                   </div>
                 </Card>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Dot Indicators */}
-          <div className="flex justify-center items-center gap-2 mt-8">
-            {testimonials.map((_, index) => (
+          {/* Dots */}
+          <div className="flex justify-center gap-2 mt-8">
+            {testimonials.map((_, i) => (
               <button
-                key={index}
+                key={i}
                 onClick={() => {
-                  setDirection(index > currentIndex ? 1 : -1);
-                  setCurrentIndex(index);
+                  setDirection(i > currentIndex ? 1 : -1);
+                  setCurrentIndex(i);
                 }}
-                className={`transition-all duration-300 rounded-full ${
-                  index === currentIndex
+                className={`rounded-full transition-all ${
+                  i === currentIndex
                     ? "w-8 h-2 bg-primary"
-                    : "w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    : "w-2 h-2 bg-muted-foreground/30"
                 }`}
-                aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
           </div>
